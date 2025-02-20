@@ -1,0 +1,28 @@
+/* Estilos base */
+.input {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  padding: 8px 12px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border 0.3s ease-in-out;
+  /* width: 100%; */
+}
+
+/* Efecto al enfocar */
+.input:focus {
+  border-color: #007bff;
+}
+
+/* Estilos de error */
+.input-error {
+  border-color: #dc3545;
+  background-color: #f8d7da;
+}
+
+/* Estado deshabilitado */
+.input:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
