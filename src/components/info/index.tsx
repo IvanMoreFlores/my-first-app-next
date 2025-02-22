@@ -6,9 +6,10 @@ type InfoProps = {
   text: string;
   type?: "warning" | "error" | "success";
 };
+
 const index: React.FC<InfoProps> = ({ text, type }) => {
   return (
-    <div className="div__info">
+    <div className={`div__info ${type}`}>
       <DSLabel color="white" text={text} />
     </div>
   );
