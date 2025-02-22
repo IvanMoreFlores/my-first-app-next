@@ -62,6 +62,12 @@ const useLogin = () => {
         setTextInfo("success");
         setColorInfo("success");
         console.log(response);
+        localStorage.setItem("token", response.accessToken);
+        localStorage.setItem("username", response.username);
+        localStorage.setItem("email", response.email);
+        localStorage.setItem("firstName", response.firstName);
+        localStorage.setItem("lastName", response.lastName);
+        alert("Hola! " + response.firstName);
         // redirect("/dashboard");
       } else {
         inputRef.current?.focus();
