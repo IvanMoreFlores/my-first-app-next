@@ -5,8 +5,16 @@ import "./styles.css";
 import useLogin from "./useLogin";
 
 const LoginPage = () => {
-  const { error, handleLogin, onChange, user, inputRef, textInfo, colorInfo } =
-    useLogin();
+  const {
+    error,
+    handleLogin,
+    onChange,
+    user,
+    inputRef,
+    textInfo,
+    colorInfo,
+    buttonDisabled,
+  } = useLogin();
   return (
     <div className="div__login">
       <DSLabel
@@ -39,6 +47,7 @@ const LoginPage = () => {
         onClick={() => handleLogin(user.username, user.password)}
         variant="success"
         text="Ingresar"
+        disabled={buttonDisabled}
       ></DSButton>
     </div>
   );
