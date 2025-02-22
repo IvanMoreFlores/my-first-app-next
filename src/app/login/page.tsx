@@ -1,5 +1,5 @@
 "use client";
-import { DSButton, DSInfo, DSInput, DSLabel } from "@/components";
+import { DSButton, DSInfo, DSInput, DSLabel } from "@/presentation/components";
 import React from "react";
 import "./styles.css";
 import useLogin from "./useLogin";

@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Proyecto Next.js con Clean Architecture
 
-## Getting Started
+Este proyecto implementa **Next.js 15+ con App Router**, siguiendo **Clean Architecture**.
 
-First, run the development server:
+## 🚀 Estructura de Carpetas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+/MY-FIRST-APP-NEXT
+│── /src
+│   ├── /app
+│   │   ├── /login
+│   │   │   ├── page.tsx
+│   │   │   ├── styles.css
+│   │   │   ├── useLogin.ts
+│   │   ├── /favicon.ico
+│   │   ├── /globals.css
+│   │   ├── /layout.tsx
+│   │   ├── /page.tsx
+│   ├── /application  # Casos de uso y lógica de negocio
+│   │   ├── /useCases
+│   │   │   ├── AuthCases.ts
+│   │   ├── /services
+│   │   │   ├── api.ts
+│   ├── /domain  # Modelos y entidades
+│   │   ├── /models
+│   │   │   ├── Auth.ts
+│   │   ├── /repositories
+│   │   │   ├── AuthRepository.ts
+│   ├── /infrastructure  # Implementaciones concretas
+│   │   ├── /repositories
+│   │   │   ├── AuthApi.ts
+│   ├── /presentation  # Componentes de UI y páginas
+│   │   ├── /components
+│   │   │   ├── button
+│   │   │   ├── info
+│   │   │   ├── input
+│   │   │   ├── label
+│   │   │   ├── index.ts
+│   │   ├── /hooks
+│   │   ├── /state
+│   ├── /test  # Pruebas unitarias y de integración
+│   ├── /utils  # regex - number - date
+│── /public
+│── /styles
+│── next.config.js
+│── tsconfig.json
+│── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏛️ ¿Qué es Clean Architecture?
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Clean Architecture es un enfoque que separa las responsabilidades en diferentes capas para mejorar la mantenibilidad, escalabilidad y testabilidad del código. Se basa en la idea de que las reglas de negocio deben estar separadas de las implementaciones concretas, como la UI o las llamadas a APIs externas.
 
-## Learn More
+### 🔹 Capas en este proyecto:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Domain (Dominio)**: Define las entidades y modelos de datos que representan la lógica del negocio.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   - `/models`: Contiene las estructuras de datos principales.
+   - `/repositories`: Define las interfaces para acceder a los datos.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Application (Aplicación)**: Implementa la lógica del negocio y los casos de uso.
 
-## Deploy on Vercel
+   - `/useCases`: Define los casos de uso que ejecutan reglas de negocio.
+   - `/services`: Conecta con APIs y otras fuentes de datos.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Infrastructure (Infraestructura)**: Implementa las interfaces definidas en Domain.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   - `/repositories`: Contiene implementaciones concretas de acceso a datos.
+
+4. **Presentation (Presentación)**: Contiene los componentes de UI y las páginas de la aplicación.
+
+   - `/components`: Contiene componentes reutilizables.
+   - `/hooks`: Contiene hooks personalizados.
+   - `/state`: Puede incluir estados globales o gestión dagr
+
+---
+
+## ⚡ Instalación y Uso
+
+1. Clona el repositorio:
+   ```sh
+   git clone https://github.com/IvanMoreFlores/my-first-app-next.git
+   cd tu-repo
+   ```
+2. Instala las dependencias:
+   ```sh
+   npm install
+   ```
+3. Inicia el servidor en modo desarrollo:
+   ```sh
+   npm run dev
+   ```
+
+---
+
+## 🚀 Subir un cambio a Git
+
+Formato recomendado para mensajes de commit:
+* feat: ➝ Nueva funcionalidad.
+* fix: ➝ Corrección de errores.
+* refactor: ➝ Mejora del código sin cambiar funcionalidad.
+* docs: ➝ Cambios en la documentación.
+* style: ➝ Cambios en formato, espacios, puntos y comas.
+* test: ➝ Agregar o modificar pruebas.
+* chore: ➝ Cambios menores o configuración.
+
+---
+
+## 🌟 Contribuciones
+
+Si quieres mejorar el proyecto, ¡las PRs son bienvenidas! 🚀
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia MIT.

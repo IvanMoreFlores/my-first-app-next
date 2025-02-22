@@ -1,7 +1,7 @@
 "use client";
-import { AuthApi } from "@/data/datasources/AuthApi";
-import { AuthCases } from "@/domain/usecases/AuthCases";
-import { validateEmail } from "@/utils";
+import { AuthApi } from "@/infrastructure/repositories/AuthApi";
+import { AuthCases } from "@/application/useCases/AuthCases";
+// import { validateEmail } from "@/utils";
 import { useEffect, useRef, useState } from "react";
 
 interface User {
@@ -54,20 +54,22 @@ const useLogin = () => {
 
       const loginUseCase = new AuthCases(new AuthApi());
 
-      const { response, status } = await loginUseCase.login(username, password);
+      const result = await loginUseCase.login(username, password);
 
-      if (status === 200 || status === 204) {
+      if (result.status === 200 || result.status === 204) {
         setUser({ username: "", password: "" });
         setError(true);
         setTextInfo("success");
         setColorInfo("success");
-        console.log(response);
-        localStorage.setItem("token", response.accessToken);
-        localStorage.setItem("username", response.username);
-        localStorage.setItem("email", response.email);
-        localStorage.setItem("firstName", response.firstName);
-        localStorage.setItem("lastName", response.lastName);
-        alert("Hola! " + response.firstName);
+        if ("response" in result) {
+          console.log(result.response);
+          localStorage.setItem("token", result.response.accessToken);
+          localStorage.setItem("username", result.response.username);
+          localStorage.setItem("email", result.response.email);
+          localStorage.setItem("firstName", result.response.firstName);
+          localStorage.setItem("lastName", result.response.lastName);
+          alert("Hola! " + result.response.firstName);
+        }
         // redirect("/dashboard");
       } else {
         inputRef.current?.focus();
@@ -75,7 +77,7 @@ const useLogin = () => {
         setTextInfo("Credenciales incorrectas");
         setColorInfo("error");
       }
-      console.log(status);
+      console.log(result.status);
     } catch (error) {
       console.error(error);
       setError(true);
