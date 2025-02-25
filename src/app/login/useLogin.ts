@@ -1,8 +1,8 @@
 "use client";
 import { AuthApi } from "@/infrastructure/repositories/AuthApi";
 import { AuthCases } from "@/application/useCases/AuthCases";
-// import { validateEmail } from "@/utils";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface User {
   username: string;
@@ -15,6 +15,7 @@ const useLogin = () => {
   const [textInfo, setTextInfo] = useState("");
   const [colorInfo, setColorInfo] = useState("success");
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setUser({ username: "ivan", password: "admin" });
@@ -45,22 +46,16 @@ const useLogin = () => {
         return;
       }
 
-      // if (!validateEmail(username)) {
-      //   setError(true);
-      //   setTextInfo("Correo inválido");
-      //   setColorInfo("error");
-      //   return;
-      // }
-
       const loginUseCase = new AuthCases(new AuthApi());
 
       const result = await loginUseCase.login(username, password);
-
+      console.log(result.status);
       if (result.status === 200 || result.status === 204) {
         setUser({ username: "", password: "" });
         setError(true);
         setTextInfo("success");
         setColorInfo("success");
+
         if ("response" in result) {
           console.log(result.response);
           localStorage.setItem("token", result.response.accessToken);
@@ -68,16 +63,14 @@ const useLogin = () => {
           localStorage.setItem("email", result.response.email);
           localStorage.setItem("firstName", result.response.firstName);
           localStorage.setItem("lastName", result.response.lastName);
-          alert("Hola! " + result.response.firstName);
+          router.push("/listado");
         }
-        // redirect("/dashboard");
       } else {
         inputRef.current?.focus();
         setError(true);
         setTextInfo("Credenciales incorrectas");
         setColorInfo("error");
       }
-      console.log(result.status);
     } catch (error) {
       console.error(error);
       setError(true);
