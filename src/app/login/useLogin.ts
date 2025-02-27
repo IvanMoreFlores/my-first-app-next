@@ -18,9 +18,14 @@ const useLogin = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const accessToken = localStorage.getItem("token");
+    if (accessToken) {
+      router.push("/listado");
+      return;
+    }
     setUser({ username: "ivan", password: "admin" });
     inputRef.current?.focus();
-  }, []);
+  }, [router]);
 
   const handleLogin = async (username: string, password: string) => {
     setButtonDisabled(true);
@@ -63,6 +68,7 @@ const useLogin = () => {
           localStorage.setItem("email", result.response.email);
           localStorage.setItem("firstName", result.response.firstName);
           localStorage.setItem("lastName", result.response.lastName);
+          localStorage.setItem("image", result.response.image);
           router.push("/listado");
         }
       } else {
