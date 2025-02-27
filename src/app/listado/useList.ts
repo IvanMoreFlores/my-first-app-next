@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
 import { ProductCases } from "@/application/useCases/ProductCases";
-import { Products } from "@/domain/models/Product";
-import { productApi } from "@/infrastructure/repositories/ProductApi";
+import { Products } from "@/domain/models/Products";
+import { ProductApi } from "@/infrastructure/repositories/ProductApi";
 
 const useList = () => {
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState<Products | null>(null); // Agregamos tipado correcto
 
   useEffect(() => {
-    getProduct();
-  }, []);
+    const fetchProducts = async () => {
+      const getProductAll = new ProductCases(new ProductApi());
+      const result = await getProductAll.getAllProducts();
 
-  const getProduct = async () => {
-    const getProductAll = new ProductCases(new productApi());
-    const result = await getProductAll.getAllProducts();
-    console.log(result.response.products);
-    await setProduct(result.response)
-  };
+      if ("response" in result) {
+        setProduct(result.response);
+      } else {
+        console.error("Error fetching products:", result.error.message);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return { product };
 };
