@@ -6,12 +6,14 @@ import { ProductApi } from "@/infrastructure/repositories/ProductApi";
 import { Product } from "@/domain/models/Products";
 import { DSButton, DSNavbar } from "@/presentation/components";
 import Image from "next/image";
+import { cartStore } from "@/presentation/state/cartStore";
 
 const PageDetailProduct = () => {
   const searchParams = useSearchParams();
   const [product, setProduct] = useState<Product | null>(null);
   const router = useRouter();
   const id = searchParams.get("id");
+  const { addProduct } = cartStore();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -27,8 +29,12 @@ const PageDetailProduct = () => {
     fetchProduct();
   }, [id]);
 
-  const onClickAddCart = () => console.log("Agregar al carrito");
-  const onClickShopping = () => console.log("Ir a comprar");
+  const onClickAddCart = () => {
+    if (product) addProduct(product);
+    // router.push("/pagar");
+  };
+
+  const onClickShopping = () =>{router.push("/pagar")};
   const onClickBack = () => router.back();
 
   return (

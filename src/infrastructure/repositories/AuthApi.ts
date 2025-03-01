@@ -11,7 +11,7 @@ export class AuthApi implements AuthRepository {
     const url = "/auth/login";
 
     try {
-      const response = await api.post(url, { username, password });
+      const response = await api.post(url, { username, password, expiresInMins: 5 });
       return { response: response.data, status: response.status };
     } catch (error) {
       if (error instanceof AxiosError) {

@@ -63,13 +63,13 @@ const useLogin = () => {
 
         if ("response" in result) {
           console.log(result.response);
-          localStorage.setItem("token", result.response.accessToken);
-          localStorage.setItem("username", result.response.username);
-          localStorage.setItem("email", result.response.email);
-          localStorage.setItem("firstName", result.response.firstName);
-          localStorage.setItem("lastName", result.response.lastName);
-          localStorage.setItem("image", result.response.image);
-          router.push("/listado");
+          await localStorage.setItem("token", result.response.accessToken);
+          await localStorage.setItem("username", result.response.username);
+          await localStorage.setItem("email", result.response.email);
+          await localStorage.setItem("firstName", result.response.firstName);
+          await localStorage.setItem("lastName", result.response.lastName);
+          await localStorage.setItem("image", result.response.image);
+          await router.push("/listado");
         }
       } else {
         inputRef.current?.focus();

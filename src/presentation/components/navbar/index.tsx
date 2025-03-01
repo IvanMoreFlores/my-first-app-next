@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { cartStore } from "@/presentation/state/cartStore";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
+  const router = useRouter();
+  const {products} = cartStore()
 
   useEffect(() => {
     const storedImage = localStorage.getItem("image");
@@ -13,6 +17,12 @@ const NavBar = () => {
       setImageSrc(storedImage);
     }
   }, []);
+
+  const handleLogout = async () => {
+    await localStorage.removeItem("token");
+    await localStorage.removeItem("image");
+    router.replace("/login");
+  };
 
   return (
     <nav className="fixed top-0 w-full bg-gray-900 text-white p-4 shadow-md z-50">
@@ -43,6 +53,10 @@ const NavBar = () => {
           ) : (
             <span className="text-gray-400">No image</span>
           )}
+          {/* <a onClick={handleLogout} className="underline">
+            Cerrar session
+          </a> */}
+          <p>{products?.length}</p>
         </div>
         <button
           className="md:hidden focus:outline-none"
