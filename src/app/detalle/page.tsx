@@ -1,41 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { ProductCases } from "@/application/useCases/ProductCases";
-import { ProductApi } from "@/infrastructure/repositories/ProductApi";
-import { Product } from "@/domain/models/Products";
-import { DSButton, DSNavbar } from "@/presentation/components";
+import React from "react";
 import Image from "next/image";
-import { cartStore } from "@/presentation/state/cartStore";
+import useDetail from "./useDetail";
+import { DSNavbar } from "@/presentation/components";
 
 const PageDetailProduct = () => {
-  const searchParams = useSearchParams();
-  const [product, setProduct] = useState<Product | null>(null);
-  const router = useRouter();
-  const id = searchParams.get("id");
-  const { addProduct } = cartStore();
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const getProductById = new ProductCases(new ProductApi());
-      const result = await getProductById.getIdProduct(Number(id));
-      if ("response" in result) {
-        setProduct(result.response);
-      } else {
-        console.error("Error fetching product:", result.error.message);
-      }
-    };
-
-    fetchProduct();
-  }, [id]);
-
-  const onClickAddCart = () => {
-    if (product) addProduct(product);
-    // router.push("/pagar");
-  };
-
-  const onClickShopping = () =>{router.push("/pagar")};
-  const onClickBack = () => router.back();
+  const { product, onClickAddCart, onClickShopping, onClickBack } = useDetail();
 
   return (
     <div className="min-h-screen bg-gray-100">
