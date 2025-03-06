@@ -1,5 +1,6 @@
 "use client";
 import { DSButton, DSInput, DSNavbar } from "@/presentation/components";
+import { useToast } from "@/presentation/context/ToastContext";
 import { cartStore } from "@/presentation/state/cartStore";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -7,6 +8,7 @@ import React, { useEffect } from "react";
 const PagePay = () => {
   const { products, removeProduct } = cartStore();
   const router = useRouter();
+  const { addToast } = useToast();
 
   useEffect(() => {
     console.log(products);
@@ -17,6 +19,7 @@ const PagePay = () => {
   };
 
   const onDelete = (id: number) => {
+    addToast("¡Operación exitosa!", "success");
     removeProduct(id);
     console.log(id);
   };
@@ -24,95 +27,81 @@ const PagePay = () => {
   return (
     <>
       <DSNavbar />
-      <div style={{ paddingTop: 40, paddingLeft: 24 }}>
+      <div className="container mx-auto p-24 h-100vh">
         <button
           onClick={onClickBack}
-          className="mb-4 mt-12 text-blue-600 hover:underline"
+          className="text-blue-600 hover:underline flex items-center"
         >
           ← Volver
         </button>
-      </div>
-      <div
-        style={{
-          padding: "24px",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          gap: "10%",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            fontWeight: "bold",
-            gap: 32,
-            flexDirection: "column",
-          }}
-        >
-          <h1 className="text-4xl">
-            {products && products?.length > 1
-              ? "Productos a pagar"
-              : "Producto a pagar"}
-          </h1>
-          {products &&
-            products.length > 0 &&
-            products.map((product, index) => (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignContent: "space-between",
-                  gap: 12,
-                }}
-                key={index}
-              >
-                <p style={{ fontSize: 24, fontWeight: "bold" }}>
-                  {product.title} (1)
-                </p>
-                <DSButton
-                  onClick={() => onDelete(product.id)}
-                  text="X"
-                ></DSButton>
-              </div>
-            ))}
-          <p style={{ fontSize: 24, fontWeight: "bold" }}>
-            cantidad de productos {products?.length}
-          </p>
-          <p className="text-5xl py-8">
-            Total: $
-            {products &&
-              products.reduce((acc, curr) => acc + curr.price, 0).toFixed(2)}
-          </p>
-        </div>
-        <div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <h1 className="text-4xl">Información de pago</h1>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                gap: 16,
-              }}
-            >
+        <div className="flex flex-col md:flex-row justify-center gap-10 mt-10">
+          <div className="bg-white shadow-lg p-6 rounded-xl w-full md:w-2/3">
+            <h1 className="text-2xl font-bold mb-4">
+              {products && products.length > 1
+                ? "Productos a pagar"
+                : "Producto a pagar"}
+            </h1>
+            <div className="space-y-4">
+              {products?.length > 0 ? (
+                products.map((product) => (
+                  <div
+                    key={product.id}
+                    className="flex items-center bg-gray-100 p-4 rounded-lg shadow-sm"
+                  >
+                    <img
+                      src={product.thumbnail}
+                      alt={product.title}
+                      className="w-16 h-16 object-cover rounded-lg mr-4"
+                    />
+                    <div className="flex-1">
+                      <p className="text-lg font-semibold">{product.title} - ({product.quantity})</p>
+                      <p className="text-sm text-gray-600">
+                        ${product.price.toFixed(2)} x {product.quantity}
+                      </p>
+                    </div>
+                    <DSButton
+                      onClick={() => onDelete(product.id)}
+                      text="X"
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                    />
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500">No hay productos en el carrito.</p>
+              )}
+            </div>
+            <p className="text-xl font-bold mt-6">
+              Cantidad de productos:{" "}
+              {products?.reduce((acc, curr) => acc + curr.quantity, 0)}
+            </p>
+            <p className="text-3xl font-bold mt-4">
+              Total: $
+              {products
+                ?.reduce((acc, curr) => acc + curr.price * curr.quantity, 0)
+                .toFixed(2)}
+            </p>
+          </div>
+          <div className="bg-white shadow-lg p-6 rounded-xl w-full md:w-1/3">
+            <h1 className="text-2xl font-bold mb-4">Información de pago</h1>
+            <div className="space-y-4">
               <div>
-                <p>Nombre</p>
-                <DSInput></DSInput>
+                <p className="text-gray-700">Nombre</p>
+                <DSInput className="w-full border rounded-md p-2" />
               </div>
               <div>
-                <p>Correo</p>
-                <DSInput></DSInput>
+                <p className="text-gray-700">Correo</p>
+                <DSInput className="w-full border rounded-md p-2" />
               </div>
               <div>
-                <p>Dirección</p>
-                <DSInput></DSInput>
+                <p className="text-gray-700">Dirección</p>
+                <DSInput className="w-full border rounded-md p-2" />
               </div>
             </div>
             <DSButton
-              disabled={products?.length > 0 ? false : true}
-              className="w-full"
+              disabled={products?.length === 0}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-6 py-2 rounded-lg disabled:bg-gray-400"
               text="Procesar pago"
-            ></DSButton>
+            />
           </div>
         </div>
       </div>

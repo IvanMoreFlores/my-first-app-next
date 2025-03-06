@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
+import { ToastProvider } from "@/presentation/context/ToastContext";
+import ApolloProvider from "@/presentation/components/data-graphql/ApiClient";
+import { ThemeProvider } from "@/presentation/theme/themeProvider";
 
 export const metadata: Metadata = {
   title: "Next",
@@ -12,8 +15,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <ThemeProvider>
+      <html lang="en">
+        <ToastProvider>
+          <body>
+            <ApolloProvider>{children} </ApolloProvider>
+          </body>
+        </ToastProvider>
+      </html>
+    </ThemeProvider>
   );
 }
