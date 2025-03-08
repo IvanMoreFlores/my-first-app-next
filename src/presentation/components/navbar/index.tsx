@@ -4,23 +4,27 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { cartStore } from "@/presentation/state/cartStore";
+// import { useUser } from "@/presentation/context/UserConext";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
   const router = useRouter();
-  const {products} = cartStore()
+  const { products } = cartStore();
+  // const { user } = useUser();
+  const [user, setUser] = useState<string>("Ivan");
 
   useEffect(() => {
     const storedImage = localStorage.getItem("image");
-    if (storedImage) {
+    const userName = localStorage.getItem("username");
+    if (storedImage && userName ) {
       setImageSrc(storedImage);
+      setUser(userName);
     }
   }, []);
 
   const handleLogout = async () => {
-    await localStorage.removeItem("token");
-    await localStorage.removeItem("image");
+    await localStorage.clear();
     router.replace("/login");
   };
 
@@ -53,9 +57,10 @@ const NavBar = () => {
           ) : (
             <span className="text-gray-400">No image</span>
           )}
-          {/* <a onClick={handleLogout} className="underline">
+          <a onClick={handleLogout} className="underline">
             Cerrar session
-          </a> */}
+          </a>
+          <a>{user}</a>
           <p>{products?.length}</p>
         </div>
         <button

@@ -3,13 +3,15 @@ import { DSButton, DSInfo, DSInput, DSLabel } from "@/presentation/components";
 import React from "react";
 import "./styles.css";
 import useLogin from "./useLogin";
+import { Formik } from "formik";
+import { validatePassword } from "@/utils";
 
 const LoginPage = () => {
   const {
     error,
     handleLogin,
     onChange,
-    user,
+    userLogin,
     inputRef,
     textInfo,
     colorInfo,
@@ -17,7 +19,71 @@ const LoginPage = () => {
   } = useLogin();
   return (
     <div className="div__login">
-      <DSLabel
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validate={(values) => {
+          const errors = {
+            email: "",
+            password: "",
+          };
+          if (!values.email) {
+            errors.email = "Ingrese un email";
+          }
+          if (!values.password) {
+            errors.password = "Ingrese una contraseña";
+          }
+          return errors;
+        }}
+        onSubmit={(values) => {
+          handleLogin(values.email, values.password);
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <div>
+              <DSLabel text="Usuario" />
+              <div>
+                <input
+                  type="text"
+                  name="email"
+                  onChange={handleChange}
+                  value={values.email}
+                />
+              </div>
+              {errors.email && touched.email && errors.email}
+              <DSLabel text="Contraseña" />
+              <div>
+                <input
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  value={values.password}
+                />
+              </div>
+              {errors.password && touched.password && errors.password}
+            </div>
+
+            <DSButton
+            type="submit"
+              style={{ width: "100%", marginBottom: 20, marginTop: 20 }}
+              onClick={() => handleLogin(values.email, values.password)}
+              variant="success"
+              text="Ingresar"
+              disabled={buttonDisabled || isSubmitting}
+            ></DSButton>
+          </form>
+        )}
+      </Formik>
+
+      {/* <DSLabel
         type="large"
         className="underline"
         text="Ingrese sus credenciales"
@@ -25,14 +91,14 @@ const LoginPage = () => {
       <div>
         <DSLabel text="Usuario" />
         <DSInput
-          value={user.username}
+          value={userLogin.username}
           ref={inputRef}
           onChange={(e) => onChange(e, "username")}
           placeholder="Ingrese su usuario"
         />
         <DSLabel text="Contraseña" />
         <DSInput
-          value={user.password}
+          value={userLogin.password}
           onChange={(e) => onChange(e, "password")}
           placeholder="Ingrese su contraseña"
           type="password"
@@ -44,11 +110,11 @@ const LoginPage = () => {
         <></>
       )}
       <DSButton
-        onClick={() => handleLogin(user.username, user.password)}
+        onClick={() => handleLogin(userLogin.username, userLogin.password)}
         variant="success"
         text="Ingresar"
         disabled={buttonDisabled}
-      ></DSButton>
+      ></DSButton> */}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { AuthApi } from "@/infrastructure/repositories/AuthApi";
 import { AuthCases } from "@/application/useCases/AuthCases";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/presentation/context/UserConext";
 
 interface User {
   username: string;
@@ -11,11 +12,15 @@ interface User {
 const useLogin = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState(false);
-  const [user, setUser] = useState<User>({ username: "", password: "" });
+  const [userLogin, setUserLogin] = useState<User>({
+    username: "",
+    password: "",
+  });
   const [textInfo, setTextInfo] = useState("");
   const [colorInfo, setColorInfo] = useState("success");
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const router = useRouter();
+  const { setUser } = useUser();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("token");
@@ -23,11 +28,13 @@ const useLogin = () => {
       router.push("/listado");
       return;
     }
-    setUser({ username: "ivan", password: "admin" });
+    setUserLogin({ username: "ivan", password: "admin" });
     inputRef.current?.focus();
   }, [router]);
 
   const handleLogin = async (username: string, password: string) => {
+    console.log(username);
+    console.log(password);
     setButtonDisabled(true);
     try {
       if (!username && !password) {
@@ -56,13 +63,14 @@ const useLogin = () => {
       const result = await loginUseCase.login(username, password);
       console.log(result.status);
       if (result.status === 200 || result.status === 204) {
-        setUser({ username: "", password: "" });
+        setUserLogin({ username: "", password: "" });
         setError(true);
         setTextInfo("success");
         setColorInfo("success");
 
         if ("response" in result) {
           console.log(result.response);
+          await setUser(result.response);
           await localStorage.setItem("token", result.response.accessToken);
           await localStorage.setItem("username", result.response.username);
           await localStorage.setItem("email", result.response.email);
@@ -89,14 +97,14 @@ const useLogin = () => {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
-    setUser({ ...user, [field]: e.target.value });
+    setUserLogin({ ...userLogin, [field]: e.target.value });
   };
 
   return {
     error,
     handleLogin,
-    user,
-    setUser,
+    userLogin,
+    setUserLogin,
     onChange,
     inputRef,
     textInfo,

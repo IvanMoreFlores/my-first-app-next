@@ -8,21 +8,24 @@ import { useTheme } from "@/presentation/theme/themeProvider";
 const PageListProduct = () => {
   const router = useRouter();
   const { product } = useList();
-  const {theme, toggleTheme} = useTheme()
+  const { theme, toggleTheme } = useTheme();
 
   const onClick = (id: number) => {
     router.push(`/detalle?id=${id}`);
   };
 
-  const onChangeTheme = () =>{
+  const onChangeTheme = () => {
     toggleTheme();
-  }
+  };
 
   return (
-    <div style={{backgroundColor: theme.colors.background}} className="pt-16">
+    <div style={{ backgroundColor: theme.colors.background }} className="pt-16">
       <DSNavbar />
       <div className="flex justify-end">
-        <button onClick={onChangeTheme} className="text-blue-600 hover:underline">
+        <button
+          onClick={onChangeTheme}
+          className="text-blue-600 hover:underline"
+        >
           Cambiar tema
         </button>
       </div>
