@@ -3,13 +3,8 @@ import { DSButton, DSInfo, DSInput, DSLabel } from "@/presentation/components";
 import React from "react";
 import "./styles.css";
 import useLogin from "./useLogin";
-import * as Yup from "yup";
 import { Formik } from "formik";
-
-const validate = Yup.object({
-  email: Yup.string().required("Usuario requerido"),
-  password: Yup.string().required("Contraseña requerida"),
-});
+import { validatePassword } from "@/utils";
 
 const LoginPage = () => {
   const {
@@ -26,9 +21,19 @@ const LoginPage = () => {
     <div className="div__login">
       <Formik
         initialValues={{ email: "", password: "" }}
-        validationSchema={validate}
-        validateOnChange={true}
-        validateOnBlur={true}
+        validate={(values) => {
+          const errors = {
+            email: "",
+            password: "",
+          };
+          if (!values.email) {
+            errors.email = "Ingrese un email";
+          }
+          if (!values.password) {
+            errors.password = "Ingrese una contraseña";
+          }
+          return errors;
+        }}
         onSubmit={(values) => {
           handleLogin(values.email, values.password);
         }}
@@ -67,7 +72,7 @@ const LoginPage = () => {
             </div>
 
             <DSButton
-              type="submit"
+            type="submit"
               style={{ width: "100%", marginBottom: 20, marginTop: 20 }}
               onClick={() => handleLogin(values.email, values.password)}
               variant="success"
@@ -77,6 +82,7 @@ const LoginPage = () => {
           </form>
         )}
       </Formik>
+
       {/* <DSLabel
         type="large"
         className="underline"
