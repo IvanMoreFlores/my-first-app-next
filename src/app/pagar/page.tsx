@@ -4,14 +4,17 @@ import { useToast } from "@/presentation/context/ToastContext";
 import { cartStore } from "@/presentation/state/cartStore";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const PagePay = () => {
   const { products, removeProduct } = cartStore();
   const router = useRouter();
   const { addToast } = useToast();
+  const cartProducts = useSelector((state) => state.products);
 
   useEffect(() => {
     console.log(products);
+    console.log('Productos redux: ', cartProducts);
   }, [products]);
 
   const onClickBack = () => {

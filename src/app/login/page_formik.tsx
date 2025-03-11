@@ -4,7 +4,7 @@ import React from "react";
 import "./styles.css";
 import useLogin from "./useLogin";
 import { Formik } from "formik";
-import { validatePassword } from "@/utils";
+import { validatePassword } from "@/presentation/utils";
 
 const LoginPage = () => {
   const {

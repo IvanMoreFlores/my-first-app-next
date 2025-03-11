@@ -1,9 +1,11 @@
+"use client";
 import { ProductCases } from "@/application/useCases/ProductCases";
 import { Product } from "@/domain/models/Products";
 import { ProductApi } from "@/infrastructure/repositories/ProductApi";
 import { cartStore } from "@/presentation/state/cartStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const useDetail = () => {
   const searchParams = useSearchParams();
@@ -11,6 +13,8 @@ const useDetail = () => {
   const router = useRouter();
   const id = searchParams.get("id");
   const { addProduct } = cartStore();
+  const cartProducts = useSelector((state) => state.products);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -26,8 +30,12 @@ const useDetail = () => {
     fetchProduct();
   }, [id]);
 
-  const onClickAddCart = () => {
-    if (product) addProduct(product);
+  const onClickAddCart = async () => {
+    if (product) {
+      await addProduct(product);
+      await console.log("Product added :", product);
+      await dispatch({ type: "ADD_PRODUCT", product: product });
+    }
     // router.push("/pagar");
   };
 
