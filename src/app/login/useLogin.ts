@@ -3,7 +3,8 @@ import { AuthApi } from "@/infrastructure/repositories/AuthApi";
 import { AuthCases } from "@/application/useCases/AuthCases";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/presentation/context/UserConext";
+import { createUserStore } from "@/presentation/state/userStore";
+// import { useUser } from "@/presentation/context/UserConext";
 
 interface User {
   username: string;
@@ -20,7 +21,8 @@ const useLogin = () => {
   const [colorInfo, setColorInfo] = useState("success");
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const router = useRouter();
-  const { setUser } = useUser();
+  // const { setUser } = useUser();
+  const {setUser} = createUserStore()
 
   useEffect(() => {
     const accessToken = localStorage.getItem("token");
@@ -59,7 +61,6 @@ const useLogin = () => {
       }
 
       const loginUseCase = new AuthCases(new AuthApi());
-
       const result = await loginUseCase.login(username, password);
       console.log(result.status);
       if (result.status === 200 || result.status === 204) {

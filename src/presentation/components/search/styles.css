@@ -1,0 +1,36 @@
+.div-container {
+  padding: 24px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 24px;
+  margin: 24px 24px;
+}
+
+.text-search {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.div-input-search {
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.div-icon-search {
+  padding: 24px 20px;
+}
+
+.input-search {
+  padding: 24px 20px;
+  border-radius: 0px 20px 20px 0px;
+  box-sizing: border-box;
+  font-size: 20px;
+  width: 100vh;
+}

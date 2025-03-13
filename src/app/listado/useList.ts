@@ -4,14 +4,17 @@ import { Products } from "@/domain/models/Products";
 import { ProductApi } from "@/infrastructure/repositories/ProductApi";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
+import { createUserStore } from "@/presentation/state/userStore";
 
 const useList = () => {
   const [product, setProduct] = useState<Products | null>(null); // Agregamos tipado correcto
   const router = useRouter();
   const dispatch = useDispatch();
+  const {user} = createUserStore();
 
   useEffect(() => {
     const fetchProducts = async () => {
+      console.log('Zustand : ', user)
       const token = await localStorage.getItem("token");
       if (!token) {
         router.back();
@@ -21,8 +24,10 @@ const useList = () => {
 
       if ("response" in result) {
         setProduct(result.response);
-        console.log(result.response)
-        await dispatch({ type: "GET_ALL_PRODUCTS", products: result.response.products
+        console.log(result.response);
+        dispatch({
+          type: "GET_ALL_PRODUCTS",
+          products: result.response.products,
         });
       } else {
         console.error("Error fetching products:", result.error.message);

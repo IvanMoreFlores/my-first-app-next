@@ -28,20 +28,24 @@ function productReducer(state: State = initialState, action: Action): State {
   switch (action.type) {
     case "GET_ALL_PRODUCTS":
       return { ...state, allProducts: action.products };
-    case "ADD_PRODUCT":
-      const existingProduct = state.products?.find(
+
+    case "ADD_PRODUCT": {
+      const existingProduct = state.products.find(
         (p) => p.id === action.product.id
       );
+
       return {
         ...state,
         products: existingProduct
-          ? state.products?.map((p) =>
+          ? state.products.map((p) =>
               p.id === action.product.id
                 ? { ...p, quantity: (p.quantity || 1) + 1 }
                 : p
             )
-          : [...(state.products || []), { ...action.product, quantity: 1 }],
+          : [...state.products, { ...action.product, quantity: 1 }],
       };
+    }
+
     case "REMOVE_PRODUCT":
       return {
         ...state,
@@ -49,6 +53,7 @@ function productReducer(state: State = initialState, action: Action): State {
           (product) => product.id.toString() !== action.productId
         ),
       };
+
     default:
       return state;
   }
@@ -57,7 +62,10 @@ function productReducer(state: State = initialState, action: Action): State {
 // Creamos la store con Redux DevTools si está disponible
 const store = createStore(
   productReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  (typeof window !== "undefined" &&
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__()) ||
+    undefined
 );
 
 export default store;

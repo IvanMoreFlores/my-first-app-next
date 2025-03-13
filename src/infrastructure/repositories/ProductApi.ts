@@ -61,4 +61,34 @@ export class ProductApi implements ProductRepository {
       };
     }
   }
+
+  async getSearchProduct(
+    searchQuery: string
+  ): Promise<
+    | { response: Product; status: number }
+    | { error: { message: string }; status: number }
+  > {
+    const url = "/products/search?q=" + searchQuery;
+
+    try {
+      const response = await api.get<Product>(url);
+      return { response: response.data, status: response.status };
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const status = error.response?.status || 500;
+        const errorData: { message: string } =
+          typeof error.response?.data === "object" &&
+          "message" in error.response?.data
+            ? error.response.data
+            : { message: "Unknown error" };
+
+        return { error: errorData, status };
+      }
+
+      return {
+        error: { message: "An unexpected error occurred" },
+        status: 500,
+      };
+    }
+  }
 }

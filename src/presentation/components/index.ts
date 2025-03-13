@@ -8,3 +8,4 @@ export { default as DSCardTwo } from "./card-two/index";
 export { default as DSPrivateRoute } from "./private-route/index";
 export { default as DSData } from "./data/fetch";
 export { default as DSDataGraphql } from "./data-graphql/index";
+export { default as DSSearch } from "./search/index";

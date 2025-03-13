@@ -12,4 +12,11 @@ export interface ProductRepository {
     | { response: Product; status: number }
     | { error: { message: string }; status: number }
   >;
+
+  getSearchProduct(
+    searchQuery: string
+  ): Promise<
+    | { response: Product; status: number }
+    | { error: { message: string }; status: number }
+  >;
 }

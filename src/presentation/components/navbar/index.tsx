@@ -4,6 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { cartStore } from "@/presentation/state/cartStore";
+import { FaShoppingCart } from "react-icons/fa";
+import { IoLogOut } from "react-icons/io5";
+import { BiSolidAdjustAlt } from "react-icons/bi";
+import { useTheme } from "@/presentation/theme/themeProvider";
+
 // import { useUser } from "@/presentation/context/UserConext";
 
 const NavBar = () => {
@@ -13,11 +18,12 @@ const NavBar = () => {
   const { products } = cartStore();
   // const { user } = useUser();
   const [user, setUser] = useState<string>("Ivan");
+  const { toggleTheme } = useTheme();
 
   useEffect(() => {
     const storedImage = localStorage.getItem("image");
     const userName = localStorage.getItem("username");
-    if (storedImage && userName ) {
+    if (storedImage && userName) {
       setImageSrc(storedImage);
       setUser(userName);
     }
@@ -26,6 +32,10 @@ const NavBar = () => {
   const handleLogout = async () => {
     await localStorage.clear();
     router.replace("/login");
+  };
+
+  const onChangeTheme = () => {
+    toggleTheme();
   };
 
   return (
@@ -46,6 +56,56 @@ const NavBar = () => {
               <Link href="/contacto">Contacto</Link>
             </li>
           </ul>
+          <a>{user}</a>
+          <div
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              router.replace("/pagar");
+            }}
+          >
+            {products?.length > 0 && (
+              <div
+                style={{
+                  position: "absolute",
+                  padding: 5,
+                  backgroundColor: "red",
+                  width: 20,
+                  height: 20,
+                  display: "flex",
+                  borderRadius: "50%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  fontSize: 12,
+                  fontWeight: "bold",
+                  bottom: 40,
+                }}
+              >
+                <p>{products?.length}</p>
+              </div>
+            )}
+            <FaShoppingCart />
+          </div>
+          <div
+            onClick={handleLogout}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+          >
+            <IoLogOut />
+          </div>
+          <div
+            onClick={onChangeTheme}
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            <BiSolidAdjustAlt />
+          </div>
           {imageSrc ? (
             <Image
               src={imageSrc}
@@ -57,11 +117,6 @@ const NavBar = () => {
           ) : (
             <span className="text-gray-400">No image</span>
           )}
-          <a onClick={handleLogout} className="underline">
-            Cerrar session
-          </a>
-          <a>{user}</a>
-          <p>{products?.length}</p>
         </div>
         <button
           className="md:hidden focus:outline-none"

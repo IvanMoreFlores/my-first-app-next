@@ -19,4 +19,13 @@ export class ProductCases {
   > {
     return await this.productRepository.getIdProduct(productId);
   }
+
+  async getSearchProduct(
+    searchQuery: string
+  ): Promise<
+    | { response: Product; status: number }
+    | { error: { message: string }; status: number }
+  > {
+    return await this.productRepository.getSearchProduct(searchQuery);
+  }
 }
