@@ -1,9 +1,9 @@
 "use client";
-import { AuthApi } from "@/infrastructure/repositories/AuthApi";
-import { AuthCases } from "@/application/useCases/AuthCases";
+import { AuthApi } from "../../infrastructure/repositories/AuthApi";
+import { AuthCases } from "../../application/useCases/AuthCases";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createUserStore } from "@/presentation/state/userStore";
+import { createUserStore } from "./../../presentation/state/userStore";
 // import { useUser } from "@/presentation/context/UserConext";
 
 interface User {
