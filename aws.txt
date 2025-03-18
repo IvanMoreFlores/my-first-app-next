@@ -1,0 +1,69 @@
+AWS PARA EC2
+
+Conectar a la instancia EC2
+Si ya estás conectado a la instancia desde Termius, asegúrate de que tienes privilegios de administrador:
+
+sudo su
+
+Instalar dependencias necesarias
+Tu instancia está vacía, por lo que necesitas instalar algunas herramientas básicas.
+Actualizar el sistema
+
+sudo apt update && sudo apt upgrade -y  # Para Ubuntu/Debian
+# sudo yum update -y  # Para Amazon Linux (opcional)
+
+Instalar Git, Node.js y Yarn
+Si no tienes nvm, instala primero curl y luego nvm:
+
+sudo apt install -y curl git
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+source ~/.bashrc
+
+Después, instala Node.js 20 y Yarn:
+
+nvm install 22.14.0
+nvm use 22.14.0
+nvm alias default 22.14.0
+npm install -g yarn pm2
+
+Verifica que todo está instalado correctamente:
+
+node -v
+npm -v
+yarn -v
+pm2 -v
+
+Clonar o actualizar el repositorio
+
+git clone https://github.com/IvanMoreFlores/hidro-roots-fronted.git
+rm -rf hidro-roots-fronted //Si en caso lo clonan mal
+cd hidro-roots-fronted
+git pull
+
+Instalar dependencias y compilar
+Ejecuta los siguientes comandos:
+
+yarn install
+yarn build
+
+Configurar PM2 para correr Next.js
+Asegúrate de que PM2 no tenga procesos en conflicto:
+
+pm2 stop all
+pm2 delete all
+pm2 restart "nextjs-app"
+pm2 restart "nestjs-app"
+
+Log de back
+
+pm2 logs nestjs-app
+
+Ejecuta la aplicación con PM2:
+
+pm2 start yarn --name "nextjs-app" -- start
+pm2 start yarn --name "nestjs-app" -- start
+
+Guarda la configuración para que se reinicie automáticamente al reiniciar el servidor:
+
+pm2 save
+pm2 startup
