@@ -23,9 +23,25 @@ export class ProductCases {
   async getSearchProduct(
     searchQuery: string
   ): Promise<
-    | { response: Product; status: number }
+    | { response: Products; status: number }
     | { error: { message: string }; status: number }
   > {
     return await this.productRepository.getSearchProduct(searchQuery);
+  }
+
+  async getCategoryProduct(): Promise<
+    | { response: []; status: number }
+    | { error: { message: string }; status: number }
+  > {
+    return await this.productRepository.getCategoryProduct();
+  }
+
+  async getCategoryProducts(
+    categoryId: string
+  ): Promise<
+    | { response: Products; status: number }
+    | { error: { message: string }; status: number }
+  > {
+    return await this.productRepository.getCategoryProducts(categoryId);
   }
 }

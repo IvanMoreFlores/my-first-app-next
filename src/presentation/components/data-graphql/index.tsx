@@ -1,5 +1,13 @@
 import { gql, useQuery } from "@apollo/client";
 
+interface IPropCountry {
+  code: string;
+  name: string;
+  capital: string;
+  emoji: string;
+  currency: string;
+}
+
 const GET_COUNTRIES = gql`
   query {
     countries(filter: { currency: { eq: "USD" } }) {
@@ -23,7 +31,7 @@ export default function Countries() {
     <div>
       <h1>Countries</h1>
       <ul>
-        {data.countries.map((country: any) => (
+        {data.countries.map((country:IPropCountry) => (
           <>
             <li key={country.code}>{country.name}</li>
             <li key={country.code}>{country.capital}</li>

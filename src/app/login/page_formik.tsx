@@ -1,20 +1,13 @@
 "use client";
-import { DSButton, DSInfo, DSInput, DSLabel } from "@/presentation/components";
+import { DSButton, DSLabel } from "@/presentation/components";
 import React from "react";
 import "./styles.css";
 import useLogin from "./useLogin";
 import { Formik } from "formik";
-import { validatePassword } from "@/presentation/utils";
 
 const LoginPage = () => {
   const {
-    error,
     handleLogin,
-    onChange,
-    userLogin,
-    inputRef,
-    textInfo,
-    colorInfo,
     buttonDisabled,
   } = useLogin();
   return (

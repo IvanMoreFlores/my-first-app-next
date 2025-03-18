@@ -60,12 +60,6 @@ function productReducer(state: State = initialState, action: Action): State {
 }
 
 // Creamos la store con Redux DevTools si está disponible
-const store = createStore(
-  productReducer,
-  (typeof window !== "undefined" &&
-    (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
-    (window as any).__REDUX_DEVTOOLS_EXTENSION__()) ||
-    undefined
-);
+const store = createStore(productReducer);
 
 export default store;

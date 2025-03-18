@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import useDetail from "./useDetail";
 import { DSNavbar } from "@/presentation/components";
@@ -120,4 +120,10 @@ const PageDetailProduct = () => {
   );
 };
 
-export default PageDetailProduct;
+const DetailPage = () => (
+  <Suspense fallback={<p>Cargando...</p>}>
+    <PageDetailProduct />
+  </Suspense>
+);
+
+export default DetailPage;

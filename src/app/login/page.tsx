@@ -1,5 +1,5 @@
 "use client";
-import { DSButton, DSInfo, DSInput, DSLabel } from "@/presentation/components";
+import { DSButton, DSLabel } from "@/presentation/components";
 import React from "react";
 import "./styles.css";
 import useLogin from "./useLogin";
@@ -13,13 +13,7 @@ const validate = Yup.object({
 
 const LoginPage = () => {
   const {
-    error,
     handleLogin,
-    onChange,
-    userLogin,
-    inputRef,
-    textInfo,
-    colorInfo,
     buttonDisabled,
   } = useLogin();
   return (

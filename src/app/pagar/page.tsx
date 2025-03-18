@@ -2,20 +2,15 @@
 import { DSButton, DSInput, DSNavbar } from "@/presentation/components";
 import { useToast } from "@/presentation/context/ToastContext";
 import { cartStore } from "@/presentation/state/cartStore";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 
 const PagePay = () => {
   const { products, removeProduct } = cartStore();
   const router = useRouter();
   const { addToast } = useToast();
-  const cartProducts = useSelector((state) => state.products);
 
-  useEffect(() => {
-    console.log(products);
-    console.log('Productos redux: ', cartProducts);
-  }, [products]);
 
   const onClickBack = () => {
     router.push("/");
@@ -51,7 +46,7 @@ const PagePay = () => {
                     key={product.id}
                     className="flex items-center bg-gray-100 p-4 rounded-lg shadow-sm"
                   >
-                    <img
+                    <Image
                       src={product.thumbnail}
                       alt={product.title}
                       className="w-16 h-16 object-cover rounded-lg mr-4"

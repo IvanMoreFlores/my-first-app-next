@@ -16,7 +16,19 @@ export interface ProductRepository {
   getSearchProduct(
     searchQuery: string
   ): Promise<
-    | { response: Product; status: number }
+    | { response: Products; status: number }
+    | { error: { message: string }; status: number }
+  >;
+
+  getCategoryProduct(): Promise<
+    | { response: []; status: number }
+    | { error: { message: string }; status: number }
+  >;
+
+  getCategoryProducts(
+    categoryId: string
+  ): Promise<
+    | { response: Products; status: number }
     | { error: { message: string }; status: number }
   >;
 }
